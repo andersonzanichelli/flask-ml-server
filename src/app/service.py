@@ -1,5 +1,6 @@
 from iris import Iris
 from model_runner import ModelRunner
+import logging
 
 class Service:
 
@@ -11,4 +12,7 @@ class Service:
 
     def execute(self, request):
         iris = self.create_iris(request)
+
+        logging.info(f'Created iris dto to send to model. Iris: {iris}')
+
         return ModelRunner(self.model).run(iris)
