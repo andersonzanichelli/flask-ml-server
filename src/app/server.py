@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from logging.config import dictConfig
+from flask_expects_json import expects_json
 import logging
 
 from service import Service
@@ -27,12 +28,24 @@ app = Flask(__name__)
 
 species = { 0: "Iris setosa", 1: "Iris versicolor", 2: "Iris virginica" }
 
+schema = {
+  "type": "object",
+  "properties": {
+    "sepal_length": { "type": "number" },
+    "sepal_width": { "type": "number" },
+    "petal_length": { "type": "number" },
+    "petal_width": { "type": "number" }
+  },
+  "required": ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+}
+
 @app.get("/predict")
+@expects_json(schema)
 def predict():
-    logging.info(f'Received request to predict. Request: {request}')
+    logging.info(f'Received request to predict. Request: {request.json}')
 
     model = "src/data_science/iris.knn.model"
-    result = Service(model).execute(request)
+    result = Service(model).execute(request.json)
 
     resp = {
             "model": model,
