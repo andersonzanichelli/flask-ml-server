@@ -20,8 +20,8 @@ $ flask run
 ```
 - Dockerized
 ```
-$ docker build --tag server-quickstart .
-$ docker run server-quickstart:latest
+$ docker build --tag flask-ml-server .
+$ docker run -p 5000:5000 flask-ml-server:latest
 ```
 
 ## Utility Commands
